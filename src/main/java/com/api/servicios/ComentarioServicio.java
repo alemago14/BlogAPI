@@ -81,4 +81,18 @@ public class ComentarioServicio {
 		Comentario comentario = modelMapper.map(comentarioDto, Comentario.class);
 		return comentario;
 	}
+	
+	public void eliminarComentario(Long publicacionId, Long comentarioId) {
+		Publicacion publicacion = publicacionRepo.findById(publicacionId)
+				.orElseThrow(() -> new ResourceNotFound("Publicacion", "id", publicacionId));
+		
+		Comentario comentario = comentarioRepo.findById(comentarioId)
+				.orElseThrow(() -> new ResourceNotFound("Comentario", "id", comentarioId));
+		
+		/*if(!comentario.getPublicacion().getId().equals(publicacion.getId())) {
+			throw new BlogAppException(HttpStatus.BAD_REQUEST, "El comentario no pertenece a la publicación");
+		}*/
+		
+		comentarioRepo.delete(comentario);
+	}
 }
